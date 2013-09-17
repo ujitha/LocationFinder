@@ -186,28 +186,35 @@ containing a value of this type.
         public static final int welcome=0x7f02001c;
     }
     public static final class id {
-        public static final int action_settings=0x7f05000e;
+        public static final int action_settings=0x7f050014;
+        public static final int addBtn=0x7f05000b;
+        public static final int cancelBtn=0x7f05000c;
         public static final int hybrid=0x7f050004;
-        public static final int label=0x7f050007;
-        public static final int map=0x7f050009;
+        public static final int label=0x7f05000d;
+        public static final int map=0x7f05000f;
         public static final int myLocBtn=0x7f050005;
+        public static final int nameET=0x7f050008;
+        public static final int nameTV=0x7f050007;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int receiverIDET=0x7f05000b;
+        public static final int numTV=0x7f050009;
+        public static final int numberET=0x7f05000a;
+        public static final int receiverIDET=0x7f050011;
         public static final int satellite=0x7f050002;
-        public static final int searchBtn=0x7f05000c;
-        public static final int sendBtn=0x7f05000d;
+        public static final int searchBtn=0x7f050012;
+        public static final int sendBtn=0x7f050013;
         public static final int sendLocBtn=0x7f050006;
-        public static final int sendwayTV=0x7f05000a;
+        public static final int sendwayTV=0x7f050010;
         public static final int terrain=0x7f050003;
-        public static final int textView1=0x7f050008;
+        public static final int textView1=0x7f05000e;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int activity_splash=0x7f030001;
-        public static final int list_item=0x7f030002;
-        public static final int map_layout=0x7f030003;
-        public static final int sender_layout=0x7f030004;
+        public static final int friendsadd_layout=0x7f030002;
+        public static final int list_item=0x7f030003;
+        public static final int map_layout=0x7f030004;
+        public static final int sender_layout=0x7f030005;
     }
     public static final class menu {
         public static final int main=0x7f090000;

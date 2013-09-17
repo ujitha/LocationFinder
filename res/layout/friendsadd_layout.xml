@@ -3,24 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
+    
     <TextView
-        android:id="@+id/sendwayTV"
+        android:id="@+id/nameTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="To :"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+        android:textAppearance="?android:attr/textAppearanceLarge" 
+        android:text="Name"/>
+    
     <EditText
-        android:id="@+id/receiverIDET"
+        android:id="@+id/nameET"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -28,19 +21,36 @@
 
         <requestFocus />
     </EditText>
+    
+    <TextView
+        android:id="@+id/numTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" 
+        android:text="Phone number"/>
 
-    <Button
-        android:id="@+id/searchBtn"
+    <EditText
+        android:id="@+id/numberET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="phone" />
+    
+     <Button
+        android:id="@+id/addBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Search" />
+        android:text="Add" 
+        />
 
     <Button
-        android:id="@+id/sendBtn"
+        android:id="@+id/cancelBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Send" />
+        android:text="Cancel" />
+    
 
 </LinearLayout>

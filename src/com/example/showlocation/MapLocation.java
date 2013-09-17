@@ -1,4 +1,6 @@
 package com.example.showlocation;
+//Author Ujitha Iroshan
+//Load the map with given location coordinates
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -28,20 +30,28 @@ public class MapLocation extends Activity {
 		super.onCreate(savedInstanstate);
 		setContentView(R.layout.map_layout);
 
-		latitude = getIntent().getExtras().getDouble("lati");
-		longitude = getIntent().getExtras().getDouble("longi");
-
-		// if(latitude==0 || longitude==0)
-		// {
-		// latitude=6.796342;
-		// longitude=79.900861;
-		//
-		// }
-		String numLat = Double.toString(latitude);
-		String numLon = Double.toString(longitude);
+		// get the latitude and longitude from values from Menu class
+//		if(getIntent().hasExtra("lati"))
+//		{
+//		latitude = getIntent().getExtras().getDouble("lati");
+//		longitude = getIntent().getExtras().getDouble("longi");
+//		}
+		
+		
+		LocationObj LBObj=(LocationObj) getIntent().getSerializableExtra("LocObj");
+		String numLat=LBObj.getLatitude();
+		String numLon=LBObj.getLongitude();
+		
+		latitude =Double.parseDouble(numLat);
+		longitude=Double.parseDouble(numLon);
+		
+		// Print the latitude and longitude in the text view
+		 numLat = Double.toString(latitude);
+		 numLon = Double.toString(longitude);
 		TextView tv = (TextView) findViewById(R.id.textView1);
 		tv.setText("Latitude -" + numLat + "  Longitude-" + numLon);
 
+		// load the google map
 		LatLng mycod = new LatLng(this.latitude, this.longitude);
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();

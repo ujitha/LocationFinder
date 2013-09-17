@@ -1,7 +1,10 @@
 package com.example.showlocation;
+//Author Ujitha Iroshan
+//send the location coordinates via SMS
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -9,6 +12,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -43,12 +48,41 @@ public class SMShandler extends Activity {
 			public void onClick(View arg0) {
 
 				String phoneNo = receiption.getText().toString();
-				String lat = Double.toString(getIntent().getExtras().getDouble(
-						"lati"));
-				String lon = Double.toString(getIntent().getExtras().getDouble(
-						"longi"));
+//				String lat = Double.toString(getIntent().getExtras().getDouble(
+//						"lati"));
+//				String lon = Double.toString(getIntent().getExtras().getDouble(
+//						"longi"));
+				
+				LocationObj LBObj=(LocationObj) getIntent().getSerializableExtra("LocObj");
+				String lat=LBObj.getLatitude();
+				String lon=LBObj.getLongitude();
+				String addr="";
+				
+				Geocoder geocoder=new Geocoder(getBaseContext());
+				try{
+					List<Address> address=geocoder.getFromLocation(Double.parseDouble(lat),Double.parseDouble(lon), 1);
+					
+					if(address!=null&&address.size()>0)
+					{
+						
+						for(int i=0;i<address.get(0).getMaxAddressLineIndex();i++)
+						{
+							addr+=address.get(0).getAddressLine(i);
+						}
+						
+						Toast.makeText(getBaseContext(), "Address is "+addr,Toast.LENGTH_LONG).show();
+					}
+					
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				
+				
 				String myNum = "";
 
+				// get the System date and time
 				Calendar cl = Calendar.getInstance();
 				SimpleDateFormat dateformat = new SimpleDateFormat(
 						"yyyy-MM-dd HH:mm:ss");
@@ -57,7 +91,7 @@ public class SMShandler extends Activity {
 				// Should get sender mobile number
 
 				String message = "@locationfinder#Lat-" + lat + "#Lon-" + lon
-						+ "#" + date;
+						+ "#" + date+"#"+addr+"#";
 
 				if (phoneNo.length() > 0) {
 					sendSMS(phoneNo, message);

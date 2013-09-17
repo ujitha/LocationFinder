@@ -1,4 +1,6 @@
 package com.example.showlocation;
+//Author Ujitha Iroshan
+//Send the location coordinates to the server
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,8 @@ public class LocationSender extends Activity {
 	String lon;
 	TextView sendOption;
 
-	private static String url_create_location = "http://10.216.155.44/locationFinderTest1/create_location.php";
+	// URL to send JSON string
+	private static String url_create_location = "http://10.216.30.182/locationFinderTest1/create_location.php";
 
 	// JSON Node names
 	private static final String TAG_SUCCESS = "success";
@@ -47,13 +50,19 @@ public class LocationSender extends Activity {
 		sendOption = (TextView) findViewById(R.id.sendwayTV);
 
 		sendOption.setText("Via Internet");
-		lat = Double.toString(getIntent().getExtras().getDouble("lati"));
-		lon = Double.toString(getIntent().getExtras().getDouble("longi"));
-
+		// Get the latitude and longitude from the getIntent,values are put
+		// from the Menu class
+		//lat = Double.toString(getIntent().getExtras().getDouble("lati"));
+		//lon = Double.toString(getIntent().getExtras().getDouble("longi"));
+		
+		LocationObj LBObj=(LocationObj) getIntent().getSerializableExtra("LocObj");
+		lat=LBObj.getLatitude();
+		lon=LBObj.getLongitude();
+		
 		btnSend.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-
+				// create the Asyncronic task to send location details in JSON
 				new CreateNewLocation().execute();
 
 			}
@@ -67,6 +76,7 @@ public class LocationSender extends Activity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			//Progress dialog
 			pDialog = new ProgressDialog(LocationSender.this);
 			pDialog.setMessage("Sending location..");
 			pDialog.setIndeterminate(false);

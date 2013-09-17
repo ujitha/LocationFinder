@@ -1,4 +1,6 @@
 package com.example.showlocation;
+//Author Ujitha Iroshan
+//Recive the current GPS coordinates
 
 import android.app.AlertDialog;
 import android.app.Service;
@@ -36,11 +38,13 @@ public class GPSTracker extends Service implements LocationListener {
 		getLocation();
 	}
 
+	// method return a Location with the current GPS coordinates
 	public Location getLocation() {
 		try {
 
 			locationManager = (LocationManager) mContext
 					.getSystemService(LOCATION_SERVICE);
+			// check GPS enable or not
 			isGPSenable = locationManager
 					.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
@@ -94,6 +98,7 @@ public class GPSTracker extends Service implements LocationListener {
 		return this.canGetLocation;
 	}
 
+	// Show the alert dialog to access the GPS settings
 	public void showSettingsAlert() {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 
@@ -107,7 +112,7 @@ public class GPSTracker extends Service implements LocationListener {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
+
 						Intent intent = new Intent(
 								Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 						mContext.startActivity(intent);
