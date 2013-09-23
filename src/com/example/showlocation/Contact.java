@@ -1,23 +1,21 @@
 package com.example.showlocation;
 
 public class Contact {
-	
+
 	private int id;
 	private String PhoneNumber;
 	private String Name;
-	
-	public Contact()
-	{
-		
+
+	public Contact() {
+
 	}
-	
-	public Contact(int id,String phoneNum,String name)
-	{
-		this.id=id;
-		this.PhoneNumber=phoneNum;
-		this.Name=name;
+
+	public Contact(int id, String phoneNum, String name) {
+		this.id = id;
+		this.PhoneNumber = phoneNum;
+		this.Name = name;
 	}
-	
+
 	public int getId() {
 		return id;
 	}

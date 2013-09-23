@@ -1,4 +1,5 @@
 package com.example.showlocation;
+
 //Author Ujitha Iroshan
 //send the location coordinates via SMS
 
@@ -6,14 +7,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import com.example.showlocation.LocationSender.CreateNewLocation;
+
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -23,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SMShandler extends Activity {
+
+	private ProgressDialog pDialog;
 
 	TextView sendOpt;
 	Button btnsendSMS;
@@ -42,68 +49,122 @@ public class SMShandler extends Activity {
 
 		sendOpt.setText("Via Text message");
 
+		try {
+
+			Bundle gotbasket = getIntent().getExtras();
+			String no = gotbasket.getString("number");
+			receiption.setText(no);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		btnsendSMS.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-
-				String phoneNo = receiption.getText().toString();
-//				String lat = Double.toString(getIntent().getExtras().getDouble(
-//						"lati"));
-//				String lon = Double.toString(getIntent().getExtras().getDouble(
-//						"longi"));
+				// create the Asyncronic task to send location details in SMS
+				new CreateNewMessage().execute();
 				
-				LocationObj LBObj=(LocationObj) getIntent().getSerializableExtra("LocObj");
-				String lat=LBObj.getLatitude();
-				String lon=LBObj.getLongitude();
-				String addr="";
-				
-				Geocoder geocoder=new Geocoder(getBaseContext());
-				try{
-					List<Address> address=geocoder.getFromLocation(Double.parseDouble(lat),Double.parseDouble(lon), 1);
-					
-					if(address!=null&&address.size()>0)
-					{
-						
-						for(int i=0;i<address.get(0).getMaxAddressLineIndex();i++)
-						{
-							addr+=address.get(0).getAddressLine(i);
-						}
-						
-						Toast.makeText(getBaseContext(), "Address is "+addr,Toast.LENGTH_LONG).show();
-					}
-					
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-				}
-				
-				
-				String myNum = "";
+			}
+		});
+		
+		
+		btnSearch.setOnClickListener(new View.OnClickListener() {
 
-				// get the System date and time
-				Calendar cl = Calendar.getInstance();
-				SimpleDateFormat dateformat = new SimpleDateFormat(
-						"yyyy-MM-dd HH:mm:ss");
-				String date = dateformat.format(cl.getTime());
+			@Override
+			public void onClick(View v) {
+				Bundle basket = new Bundle();
+				basket.putString("stat", "show");
+				Intent intent = new Intent(SMShandler.this, FriendsList.class);
+				intent.putExtras(basket);
+				startActivity(intent);
 
-				// Should get sender mobile number
-
-				String message = "@locationfinder#Lat-" + lat + "#Lon-" + lon
-						+ "#" + date+"#"+addr+"#";
-
-				if (phoneNo.length() > 0) {
-					sendSMS(phoneNo, message);
-				} else {
-					Toast.makeText(getBaseContext(),
-							"Please enter phone number", Toast.LENGTH_SHORT)
-							.show();
-				}
 			}
 		});
 
+		
+
 	}
+	
+	class CreateNewMessage extends AsyncTask<String, String, String> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			// Progress dialog
+			pDialog = new ProgressDialog(SMShandler.this);
+			pDialog.setMessage("Sending location..");
+			pDialog.setIndeterminate(false);
+			pDialog.setCancelable(true);
+			pDialog.show();
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			
+			String phoneNo = receiption.getText().toString();
+			System.out.println(phoneNo);
+			LocationObj LBObj = (LocationObj) getIntent()
+					.getSerializableExtra("LocObj");
+			String lat = LBObj.getLatitude();
+			String lon = LBObj.getLongitude();
+			String addr = "";
+
+			Geocoder geocoder = new Geocoder(getBaseContext());
+			try {
+				List<Address> address = geocoder.getFromLocation(
+						Double.parseDouble(lat), Double.parseDouble(lon), 1);
+
+				if (address != null && address.size() > 0) {
+
+					for (int i = 0; i < address.get(0)
+							.getMaxAddressLineIndex(); i++) {
+						addr += address.get(0).getAddressLine(i);
+					}
+
+					Toast.makeText(getBaseContext(), "Address is " + addr,
+							Toast.LENGTH_LONG).show();
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			String myNum = "";
+
+			// get the System date and time
+			Calendar cl = Calendar.getInstance();
+			SimpleDateFormat dateformat = new SimpleDateFormat(
+					"yyyy-MM-dd HH:mm:ss");
+			String date = dateformat.format(cl.getTime());
+
+			// Should get sender mobile number
+
+			String message = "@locationfinder#Lat-" + lat + "#Lon-" + lon
+					+ "#" + date + "#" + addr + "#";
+
+			if (phoneNo.length() > 0) {
+				sendSMS(phoneNo, message);
+			} else {
+				Toast.makeText(getBaseContext(),
+						"Please enter phone number", Toast.LENGTH_SHORT)
+						.show();
+			}
+		
+			
+			return null;
+		}
+
+		protected void onPostExecute(String file_url) {
+			// dismiss the dialog once done
+
+			pDialog.dismiss();
+		}
+
+	}
+
 
 	private void sendSMS(String phoneNo, String msg) {
 		String SENT = "SMS_SENT";

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.sax.StartElementListener;
 import android.telephony.SmsMessage;
+import android.widget.Toast;
 
 public class SMSReceiver extends BroadcastReceiver {
 	SmsMessage currentMessage;
@@ -17,7 +18,8 @@ public class SMSReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(final Context context, Intent intent) {
 
-		//if (intent.getAction().equals(android.provider.Telephony.SMS_RECEIVED)) {
+		if (intent.getAction()
+				.equals("android.provider.Telephony.SMS_RECEIVED")) {
 			final Bundle bundle = intent.getExtras();
 
 			try {
@@ -35,50 +37,17 @@ public class SMSReceiver extends BroadcastReceiver {
 							.toString();
 
 					if (Msg.startsWith("@locationfinder#")) {
-						StringTokenizer st = new StringTokenizer(Msg, "#");
-						st.nextToken();
-						String smLat = st.nextToken();
-						String latitude = smLat.substring(4);
-						String smlon = st.nextToken();
-						String longitude = smlon.substring(4);
-						String date = st.nextToken();
 
-						final LocationObj loc = new LocationObj(phoneNumber,
-								latitude, longitude, date);
+						Toast.makeText(context, Msg, Toast.LENGTH_LONG).show();
 
-						AlertDialog.Builder alert = new AlertDialog.Builder(
-								context);
-						alert.setTitle("New Location received");
-						alert.setMessage("New Location received from "
-								+ phoneNumber);
+						Bundle basket = new Bundle();
+						basket.putString("Msg", Msg);
+						basket.putString("phoneNumber", phoneNumber);
+						Intent i = new Intent(context, SMSreceiveOption.class);
+						i.putExtras(basket);
 
-						alert.setPositiveButton("Show",
-								new DialogInterface.OnClickListener() {
-
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-
-										Intent i = new Intent(context,
-												MapLocation.class);
-
-										i.putExtra("LocObj", loc);
-										i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-										context.startActivity(i);
-									}
-								});
-
-						alert.setNegativeButton("Ignore",
-								new DialogInterface.OnClickListener() {
-
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-
-										dialog.cancel();
-
-									}
-								});
+						i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						context.startActivity(i);
 
 					}
 				}
@@ -88,5 +57,4 @@ public class SMSReceiver extends BroadcastReceiver {
 			}
 		}
 	}
-
-//}
+}

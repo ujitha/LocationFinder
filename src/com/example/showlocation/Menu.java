@@ -43,16 +43,16 @@ public class Menu extends ListActivity {
 		// and map loads
 		if (position == 0) {
 			if (gps.cangetLocation()) {
-								
-				String latitude=Double.toString(gps.getLatitude());
-				String longitude=Double.toString(gps.getLongitude());
-				
-				LocationObj LB=new LocationObj();
+
+				String latitude = Double.toString(gps.getLatitude());
+				String longitude = Double.toString(gps.getLongitude());
+
+				LocationObj LB = new LocationObj();
 				LB.setLatitude(latitude);
 				LB.setLongitude(longitude);
-				
-				Intent intent=new Intent(Menu.this,MapLocation.class);
-				intent.putExtra("LocObj",LB);
+
+				Intent intent = new Intent(Menu.this, MapLocation.class);
+				intent.putExtra("LocObj", LB);
 
 				startActivity(intent);
 
@@ -76,30 +76,34 @@ public class Menu extends ListActivity {
 
 						// if via internet
 						if (which == 0) {
-														
-							String latitude=Double.toString(gps.getLatitude());
-							String longitude=Double.toString(gps.getLongitude());
-							
-							LocationObj LB=new LocationObj();
+
+							String latitude = Double.toString(gps.getLatitude());
+							String longitude = Double.toString(gps
+									.getLongitude());
+
+							LocationObj LB = new LocationObj();
 							LB.setLatitude(latitude);
 							LB.setLongitude(longitude);
-							
-							Intent intent=new Intent(Menu.this,LocationSender.class);
-							intent.putExtra("LocObj",LB);
+
+							Intent intent = new Intent(Menu.this,
+									LocationSender.class);
+							intent.putExtra("LocObj", LB);
 
 							startActivity(intent);
 							// via text message
 						} else if (which == 1) {
-														
-							String latitude=Double.toString(gps.getLatitude());
-							String longitude=Double.toString(gps.getLongitude());
-							
-							LocationObj LB=new LocationObj();
+
+							String latitude = Double.toString(gps.getLatitude());
+							String longitude = Double.toString(gps
+									.getLongitude());
+
+							LocationObj LB = new LocationObj();
 							LB.setLatitude(latitude);
 							LB.setLongitude(longitude);
-							
-							Intent intent=new Intent(Menu.this,SMShandler.class);
-							intent.putExtra("LocObj",LB);
+
+							Intent intent = new Intent(Menu.this,
+									SMShandler.class);
+							intent.putExtra("LocObj", LB);
 
 							startActivity(intent);
 						}
@@ -111,15 +115,10 @@ public class Menu extends ListActivity {
 			} else {
 				gps.showSettingsAlert();
 			}
-		}
-		else if(position==2)
-		{
-			Intent i=new Intent(Menu.this,FriendsSettings.class);
+		} else if (position == 2) {
+			Intent i = new Intent(Menu.this, FriendsSettings.class);
 			startActivity(i);
 		}
-		
-		
-		
 
 	}
 
@@ -137,7 +136,10 @@ public class Menu extends ListActivity {
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							finish(); // Close the application
+							Intent intent = new Intent(Intent.ACTION_MAIN);
+							intent.addCategory(Intent.CATEGORY_HOME);
+							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							startActivity(intent); // Close the application
 
 						}
 					});

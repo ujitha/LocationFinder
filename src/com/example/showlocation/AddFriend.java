@@ -52,6 +52,7 @@ public class AddFriend extends Activity {
 									getBaseContext(),
 									"New friend contact is successfully added ",
 									Toast.LENGTH_SHORT).show();
+														
 						} else {
 							Toast.makeText(
 									getBaseContext(),
